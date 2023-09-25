@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import '../size_config.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData lightTheme(context) => ThemeData(
+  ThemeData lightTheme(context) => ThemeData.light().copyWith(
       useMaterial3: true,
-      brightness: Brightness.light,
       textTheme: TextTheme(
         titleLarge: TextStyle(
           fontSize: textSize(context, size: 0.075),
@@ -23,9 +22,8 @@ class ThemeProvider extends ChangeNotifier {
           fontWeight: FontWeight.bold,
         ),
       ));
-  ThemeData darkTheme(context) => ThemeData(
+  ThemeData darkTheme(context) => ThemeData.dark().copyWith(
       useMaterial3: true,
-      brightness: Brightness.dark,
       textTheme: TextTheme(
         titleLarge: TextStyle(
           fontSize: textSize(context, size: 0.075),

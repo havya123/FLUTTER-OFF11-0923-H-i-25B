@@ -8,7 +8,7 @@ class CheckOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-      heightFactor: 1.1,
+      heightFactor: 1.2,
       child: Container(
         height: MediaQuery.sizeOf(context).height,
         decoration: BoxDecoration(

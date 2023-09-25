@@ -1,6 +1,8 @@
+import 'package:buoi3/app/theme.dart';
 import 'package:buoi3/checkout.dart';
 import 'package:buoi3/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Order extends StatelessWidget {
   const Order({super.key});
@@ -9,6 +11,14 @@ class Order extends StatelessWidget {
   Widget build(BuildContext context) {
     int itemCount = 2;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<ThemeProvider>().changeTheme();
+        },
+        child: const Center(
+          child: Text("Switch Theme"),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.separated(
@@ -85,7 +95,7 @@ class Order extends StatelessWidget {
       backgroundColor: Colors.white,
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.only(
-          bottom: margin(context, margin: 0.75),
+          bottom: margin(context, margin: 0.65),
           left: margin(context, margin: 0.05),
           right: margin(context, margin: 0.05)),
       shape: RoundedRectangleBorder(
@@ -95,23 +105,37 @@ class Order extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Row item(BuildContext context, String image, String name, String type,
-      String priceAfter, String priceBefore, String amount) {
+  Row item(context, String image, String name, String type, String priceAfter,
+      String priceBefore, String amount) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ClipRRect(
-          borderRadius: borderRadius(context, borderRadius: 0.05),
-          child: Container(
-            margin: EdgeInsets.only(
-                bottom: margin(context, margin: 0.02),
-                top: margin(context, margin: 0.02)),
-            width: getWidth(context, width: 0.35),
-            height: getHeight(context, height: 0.2),
-            child: Image.network(
-              image,
-              fit: BoxFit.cover,
-            ),
+        Container(
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.only(
+              bottom: margin(context, margin: 0.02),
+              top: margin(context, margin: 0.02)),
+          width: getWidth(context, width: 0.35),
+          height: getHeight(context, height: 0.2),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: borderRadius(context, borderRadius: 0.05),
+              boxShadow: [
+                BoxShadow(
+                    offset: const Offset(1, 1),
+                    color: Colors.grey.shade200,
+                    blurRadius: 3,
+                    spreadRadius: 0)
+              ]),
+          child: FadeInImage(
+            fit: BoxFit.cover,
+            imageErrorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Image.network(
+                  "https://icons.veryicon.com/png/o/education-technology/alibaba-cloud-iot-business-department/image-load-failed.png");
+            },
+            image: NetworkImage(image),
+            placeholder: const AssetImage("assets/loading.gif"),
           ),
         ),
         spaceAround(context),
@@ -121,39 +145,27 @@ class Order extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: TextStyle(
-                  fontSize: textSize(context, size: 0.075),
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               spaceBetween(context, height: 0.02),
-              Text(
-                type,
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: textSize(context, size: 0.055),
-                    fontWeight: FontWeight.w500),
-              ),
+              Text(type, style: Theme.of(context).textTheme.titleMedium),
               spaceBetween(context, height: 0.02),
               Row(
                 children: [
                   Text(
                     priceAfter,
                     style: TextStyle(
-                        color: Colors.orange,
-                        fontSize: textSize(context, size: 0.055),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  spaceAround(context),
-                  Text(
-                    priceBefore,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
+                      color: Colors.orange,
                       fontSize: textSize(context, size: 0.055),
                       fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
+                  spaceAround(context),
+                  Text(priceBefore,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.copyWith(decoration: TextDecoration.lineThrough))
                 ],
               ),
             ],
@@ -183,7 +195,6 @@ class Order extends StatelessWidget {
             ),
             Icon(
               Icons.remove,
-              color: Colors.orange,
               size: textSize(context, size: 0.05),
             )
           ],

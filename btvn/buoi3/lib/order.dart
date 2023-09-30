@@ -1,4 +1,4 @@
-import 'package:buoi3/app/theme.dart';
+import 'package:buoi3/provider/theme.dart';
 import 'package:buoi3/checkout.dart';
 import 'package:buoi3/size_config.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class Order extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<ThemeProvider>().changeTheme();
+          Provider.of<ThemeProvider>(context, listen: false).changeTheme();
         },
         child: const Center(
           child: Text("Switch Theme"),
@@ -22,7 +22,7 @@ class Order extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.separated(
-          itemBuilder: (context, index) {
+          itemBuilder: (_, index) {
             if (index == itemCount) {
               return null;
             }

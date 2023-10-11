@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:buoi5/model/result_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalculateProvider extends ChangeNotifier {
@@ -18,10 +16,6 @@ class CalculateProvider extends ChangeNotifier {
   void selectItem(int index) {
     selectedIndex = index;
     notifyListeners();
-  }
-
-  initState() {
-    loadResult();
   }
 
   Color getItemTextColor(int index) {
@@ -84,5 +78,6 @@ class CalculateProvider extends ChangeNotifier {
     } else {
       listResults = [];
     }
+    notifyListeners();
   }
 }

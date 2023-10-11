@@ -1,4 +1,3 @@
-import 'package:buoi5/model/result_model.dart';
 import 'package:buoi5/provider/calculate_provider.dart';
 import 'package:buoi5/screen/calculator_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +19,8 @@ class _CalculatorState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => CalculateProvider()),
-        ChangeNotifierProvider(create: (context) => ResultModel(result: "")),
+        ChangeNotifierProvider(
+            create: (context) => CalculateProvider()..loadResult()),
       ],
       builder: (context, child) {
         return GestureDetector(

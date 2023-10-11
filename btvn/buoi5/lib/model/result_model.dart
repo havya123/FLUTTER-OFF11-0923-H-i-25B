@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class ResultModel extends ChangeNotifier {
+class ResultModel {
   String result;
   bool isClick = false;
   ResultModel({required this.result});
@@ -11,10 +9,5 @@ class ResultModel extends ChangeNotifier {
 
   factory ResultModel.fromJson(Map<String, dynamic> json) {
     return ResultModel(result: json["result"] as String);
-  }
-
-  void toggleIsClick() {
-    isClick = !isClick;
-    notifyListeners();
   }
 }

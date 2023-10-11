@@ -1,4 +1,4 @@
-import 'package:buoi5/model/result_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -12,12 +12,6 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<CalculateProvider>(context, listen: false).loadResult();
-  }
-
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<CalculateProvider>(context).listResults;
@@ -96,8 +90,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                         ),
                       ),
                     ),
-                    Consumer2<CalculateProvider, ResultModel>(
-                      builder: (context, value, value2, child) {
+                    Consumer<CalculateProvider>(
+                      builder: (context, value, child) {
                         return Expanded(
                           child: ListView.separated(
                             separatorBuilder: (context, index) {
@@ -112,47 +106,45 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                 child: Material(
                                   borderRadius: BorderRadius.circular(10),
                                   clipBehavior: Clip.hardEdge,
-                                  child: ChangeNotifierProvider.value(
-                                    value: items[index],
-                                    child: InkWell(
-                                      onTap: () {
-                                        value.selectItem(index);
-                                        value.firstNumber.text = value
-                                            .listResults[index].result
-                                            .toString();
-                                        value2.toggleIsClick();
-                                      },
-                                      child: Ink(
-                                        height: 50,
-                                        width: double.infinity,
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  items[index].result,
-                                                  style: TextStyle(
-                                                    color: value2.isClick
-                                                        ? Colors.red
-                                                        : Colors.black,
-                                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      value.selectItem(index);
+                                      value.firstNumber.text = value
+                                          .listResults[index].result
+                                          .toString();
+                                      value.selectItem(index);
+                                    },
+                                    child: Ink(
+                                      height: 50,
+                                      width: double.infinity,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Center(
+                                              child: Text(
+                                                items[index].result,
+                                                style: TextStyle(
+                                                  color: value.selectedIndex ==
+                                                          index
+                                                      ? Colors.red
+                                                      : Colors.black,
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20),
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  context
-                                                      .read<CalculateProvider>()
-                                                      .deleteElement(index);
-                                                },
-                                                icon: const Icon(Icons.remove),
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                context
+                                                    .read<CalculateProvider>()
+                                                    .deleteElement(index);
+                                              },
+                                              icon: const Icon(Icons.remove),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),

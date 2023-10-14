@@ -8,15 +8,14 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-            onPressed: () {},
-            child: Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RoutesName.articleScreen);
-                  },
-                  child: const Text("change article")),
-            )),
+        child: Center(
+          child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamed(RoutesName.articleScreen);
+              },
+              child: const Text("change article")),
+        ),
       ),
     );
   }

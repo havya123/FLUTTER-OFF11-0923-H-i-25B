@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import '../../routes/route_mangager.dart';
 import '../category/category.dart';
 import '../home/home_screen.dart';
 
@@ -19,10 +20,14 @@ class _HomeState extends State<NavigationScreen> {
   final List<PersistentBottomNavBarItem> _barItem = [
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.home),
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+          onGenerateRoute: RouteManager.onGeneratedRoute),
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.date_range),
-    )
+      routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+          onGenerateRoute: RouteManager.onGeneratedRoute),
+    ),
   ];
 
   final PersistentTabController _controller = PersistentTabController();
@@ -33,7 +38,7 @@ class _HomeState extends State<NavigationScreen> {
       screens: widgets,
       items: _barItem,
       controller: _controller,
-      
+      decoration: NavBarDecoration(border: Border.all(width: 1)),
     );
   }
 }

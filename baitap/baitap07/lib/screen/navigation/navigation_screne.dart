@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../routes/route_mangager.dart';
-import '../category/category.dart';
+import '../category/category_screen.dart';
 import '../home/home_screen.dart';
 
 class NavigationScreen extends StatefulWidget {

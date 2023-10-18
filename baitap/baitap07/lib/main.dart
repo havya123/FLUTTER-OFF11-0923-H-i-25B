@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:baitap07/provider/category_news_provider.dart';
 import 'package:baitap07/provider/category_provider.dart';
 import 'package:baitap07/provider/login_provider.dart';
 import 'package:baitap07/routes/route_mangager.dart';
@@ -36,7 +37,9 @@ class _MyWidgetState extends State<MyWidget> {
         ChangeNotifierProvider(
           create: (context) => LoginProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => CategoryProvider())
+        ChangeNotifierProvider(
+            create: (context) => CategoryProvider()..loadData()),
+        ChangeNotifierProvider(create: (context) => CateNewsProvider())
       ],
       builder: (context, child) {
         return const MaterialApp(

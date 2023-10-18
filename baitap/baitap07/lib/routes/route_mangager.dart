@@ -1,6 +1,7 @@
 import 'package:baitap07/routes/routes.dart';
 import 'package:baitap07/screen/article/article_screen.dart';
-import 'package:baitap07/screen/category/category.dart';
+import 'package:baitap07/screen/category/category_screen.dart';
+import 'package:baitap07/screen/home/all_news.dart';
 import 'package:baitap07/screen/home/home_screen.dart';
 import 'package:baitap07/screen/login/login_screen.dart';
 import 'package:baitap07/screen/root/root_screen.dart';
@@ -25,6 +26,8 @@ class RouteManager {
         return pageTransition(const Home());
       case RoutesName.articleScreen:
         return pageTransition(const ArticleScreen());
+      case RoutesName.allNewsScreen:
+        return pageTransition(AllNewsScreen());
       default:
         return MaterialPageRoute(builder: (context) => const ErrorScreen());
     }

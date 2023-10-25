@@ -43,7 +43,7 @@ class _MyWidgetState extends State<MyWidget> {
       ],
       builder: (context, child) {
         return const MaterialApp(
-          initialRoute: RoutesName.navigationScreen,
+          initialRoute: RoutesName.homeScreen,
           onGenerateRoute: RouteManager.onGeneratedRoute,
         );
       },

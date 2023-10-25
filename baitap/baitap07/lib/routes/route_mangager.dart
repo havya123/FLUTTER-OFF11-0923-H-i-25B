@@ -26,8 +26,6 @@ class RouteManager {
         return pageTransition(const Home());
       case RoutesName.articleScreen:
         return pageTransition(const ArticleScreen());
-      case RoutesName.allNewsScreen:
-        return pageTransition(AllNewsScreen());
       default:
         return MaterialPageRoute(builder: (context) => const ErrorScreen());
     }

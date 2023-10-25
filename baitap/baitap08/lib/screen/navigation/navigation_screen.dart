@@ -1,0 +1,50 @@
+import 'package:baitap08/screen/home_screen/home_screen.dart';
+import 'package:baitap08/screen/search/search_screen.dart';
+import 'package:baitap08/screen/watch_list/watch_list_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({super.key});
+
+  @override
+  State<NavigationScreen> createState() => _HomeState();
+}
+
+class _HomeState extends State<NavigationScreen> {
+  List<Widget> widgets = [
+    HomeScreen(controller: _controller),
+    SearchScreen(
+      controller: _controller,
+    ),
+    const WatchListScreen(),
+  ];
+
+  final List<PersistentBottomNavBarItem> _barItem = [
+    PersistentBottomNavBarItem(
+        icon: const Icon(Icons.home),
+        inactiveColorPrimary: const Color(0xff67686D),
+        activeColorPrimary: Colors.blue),
+    PersistentBottomNavBarItem(
+        icon: const Icon(Icons.search),
+        inactiveColorPrimary: const Color(0xff67686D),
+        activeColorPrimary: Colors.blue),
+    PersistentBottomNavBarItem(
+        icon: const Icon(Icons.favorite),
+        inactiveColorPrimary: const Color(0xff67686D),
+        activeColorPrimary: Colors.blue),
+  ];
+
+  static final PersistentTabController _controller = PersistentTabController();
+  @override
+  Widget build(BuildContext context) {
+    return PersistentTabView(
+      backgroundColor: const Color(0xff242A32),
+      context,
+      screens: widgets,
+      items: _barItem,
+      controller: _controller,
+      resizeToAvoidBottomInset: true,
+    );
+  }
+}

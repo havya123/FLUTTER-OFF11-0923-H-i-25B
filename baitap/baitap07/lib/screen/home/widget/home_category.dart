@@ -1,6 +1,7 @@
 import 'package:baitap07/model/category_news.dart';
 import 'package:baitap07/provider/category_news_provider.dart';
 import 'package:baitap07/routes/routes.dart';
+import 'package:baitap07/screen/home/all_news.dart';
 import 'package:baitap07/screen/widget/item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,18 +15,10 @@ class HomeCategory extends StatefulWidget {
 }
 
 class _HomeCategoryState extends State<HomeCategory> {
-  late Future getCategory;
-  @override
-  void initState() {
-    super.initState();
-    getCategory =
-        context.read<CateNewsProvider>().getCategory(widget.idCategory);
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getCategory,
+        future: context.read<CateNewsProvider>().getCategory(widget.idCategory),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -36,7 +29,7 @@ class _HomeCategoryState extends State<HomeCategory> {
               child: Text("No data"),
             );
           } else {
-            List<CategoryNews> listData = snapshot.data;
+            List<CategoryNews> listData = snapshot.data as List<CategoryNews>;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,8 +43,12 @@ class _HomeCategoryState extends State<HomeCategory> {
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, RoutesName.allNewsScreen);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AllNewsScreen(
+                                    idCategory: widget.idCategory),
+                              ));
                         },
                         child: const Text(
                           "See All",

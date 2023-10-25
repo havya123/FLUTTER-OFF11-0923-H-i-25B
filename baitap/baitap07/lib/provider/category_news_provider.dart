@@ -6,6 +6,7 @@ class CateNewsProvider extends ChangeNotifier {
   List responses = [];
 
   Future<List<CategoryNews>> getCategory(int? id) async {
+    print(id);
     List<CategoryNews> response = await CateNewsRepo().getCategoryNews(id!);
     responses.add(response);
     return response;

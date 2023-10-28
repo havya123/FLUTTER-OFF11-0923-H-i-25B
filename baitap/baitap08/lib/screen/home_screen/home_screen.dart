@@ -27,51 +27,34 @@ class _HomeScreenState extends State<HomeScreen> {
       "Popular",
     ];
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
-            child: FutureBuilder(
-                future: context.read<MovieProvider>().getMoviesTopRated(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: Text("No Data"),
-                    );
-                  } else {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      List<Movie>? movie = snapshot.data;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "What do you want to watch?",
-                            style: textTheme.titleLarge,
-                          ),
-                          spaceHeight(context),
-                          SearchWidget(
-                              style: textTheme.labelMedium,
-                              tabController: widget.controller),
-                          spaceHeight(context),
-                          SizedBox(
-                            height: getHeight(context, height: 0.4),
-                            child: TrendingWidget(
-                              movie: movie,
-                            ),
-                          ),
-                          spaceHeight(context),
-                          TabScreen(
-                            type: type,
-                          )
-                        ],
-                      );
-                    }
-                  }
-                })),
+        body: SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "What do you want to watch?",
+            style: textTheme.titleLarge,
+          ),
+          Column(
+            children: [
+              spaceHeight(context),
+              SearchWidget(
+                  style: textTheme.labelMedium,
+                  tabController: widget.controller),
+              spaceHeight(context),
+              SizedBox(
+                height: getHeight(context, height: 0.4),
+                child: const TrendingWidget(),
+              ),
+              spaceHeight(context),
+              TabScreen(
+                type: type,
+              )
+            ],
+          )
+        ]),
       ),
-    );
+    ));
   }
 }

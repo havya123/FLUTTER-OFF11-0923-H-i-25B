@@ -24,15 +24,22 @@ class MovieRepo {
     return result;
   }
 
-  Future<Movie> getMovieDetail(int? id) async {
+  Future<Movie?> getMovieDetail(int? id) async {
     final url = "https://api.themoviedb.org/3/movie/$id?language=en-US";
     final uri = Uri.parse(url);
+
     var response = await http.get(uri, headers: {
       'accept': 'application/json',
       'Authorization': 'Bearer ${dotenv.env['token']}'
     });
-    Map<String, dynamic> listData = jsonDecode(response.body);
-    Movie result = Movie.fromJson(jsonEncode(listData));
-    return result;
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> listData = jsonDecode(response.body);
+      Movie result = Movie.fromJson(jsonEncode(listData));
+      return result;
+    } else {
+      print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+      return null;
+    }
   }
 }

@@ -9,47 +9,31 @@ class TabWidget extends StatelessWidget {
   int indexTab;
   @override
   Widget build(BuildContext context) {
-    List build = [
-      context.read<MovieProvider>().getMoviesNowPlaying(),
-      context.read<MovieProvider>().getMoviesUpComing(),
-      context.read<MovieProvider>().getMoviesTopRated(),
-      context.read<MovieProvider>().getMoviesPopular()
+    List<List<Movie>> movie = [
+      context.read<MovieProvider>().nowPlayongMovies,
+      context.read<MovieProvider>().upComingMovies,
+      context.read<MovieProvider>().topRatedMovies,
+      context.read<MovieProvider>().popularMovies,
     ];
-    return FutureBuilder(
-        future: build[indexTab],
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: Text("No Data"),
-            );
-          } else {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              List<Movie>? movie = snapshot.data as List<Movie>?;
-
-              return Expanded(
-                child: GridView.builder(
-                  scrollDirection: Axis.vertical,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1 / 1.6,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    return Item(
-                      image: movie[index].posterPath,
-                      id: movie[index].id,
-                    );
-                  },
-                  itemCount: movie!.length,
-                ),
-              );
-            }
-          }
-        });
+    return Consumer<MovieProvider>(builder: (context, value, child) {
+      return GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 1 / 1.6,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemBuilder: (context, index) {
+          return Item(
+            image: movie[indexTab][index].posterPath,
+            id: movie[indexTab][index].id,
+          );
+        },
+        itemCount: movie[indexTab].length,
+      );
+    });
   }
 }

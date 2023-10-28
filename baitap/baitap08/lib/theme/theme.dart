@@ -5,7 +5,7 @@ class ThemeApp {
     scaffoldBackgroundColor: const Color(0xff242A32),
     textTheme: const TextTheme(
       titleLarge: TextStyle(
-          fontWeight: FontWeight.w500, color: Colors.white, fontSize: 25),
+          fontWeight: FontWeight.w500, color: Colors.white, fontSize: 23),
       labelMedium: TextStyle(
         fontSize: 20,
         color: Color(0xff67686D),

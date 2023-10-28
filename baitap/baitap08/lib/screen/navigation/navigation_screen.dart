@@ -1,7 +1,9 @@
+import 'package:baitap08/screen/favourite/favourite_screen.dart';
 import 'package:baitap08/screen/home_screen/home_screen.dart';
 import 'package:baitap08/screen/search/search_screen.dart';
-import 'package:baitap08/screen/watch_list/watch_list_screen.dart';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -17,7 +19,8 @@ class _HomeState extends State<NavigationScreen> {
     SearchScreen(
       controller: _controller,
     ),
-    const WatchListScreen(),
+    const FavouriteScreen()
+    // const WatchListScreen(),
   ];
 
   final List<PersistentBottomNavBarItem> _barItem = [
@@ -30,9 +33,13 @@ class _HomeState extends State<NavigationScreen> {
         inactiveColorPrimary: const Color(0xff67686D),
         activeColorPrimary: Colors.blue),
     PersistentBottomNavBarItem(
-        icon: const Icon(Icons.favorite),
+        icon: const Icon(FontAwesomeIcons.list),
         inactiveColorPrimary: const Color(0xff67686D),
         activeColorPrimary: Colors.blue),
+    // PersistentBottomNavBarItem(
+    //     icon: const Icon(Icons.favorite),
+    //     inactiveColorPrimary: const Color(0xff67686D),
+    //     activeColorPrimary: Colors.blue),
   ];
 
   static final PersistentTabController _controller = PersistentTabController();

@@ -1,4 +1,8 @@
+import 'package:baitap08/provider/caster_provider.dart';
+import 'package:baitap08/provider/favourite_provider.dart';
 import 'package:baitap08/provider/movie_provider.dart';
+import 'package:baitap08/provider/review_provider.dart';
+import 'package:baitap08/provider/search_provider.dart';
 import 'package:baitap08/route/route_manager.dart';
 import 'package:baitap08/route/routes.dart';
 import 'package:baitap08/screen/home_screen/home_screen.dart';
@@ -11,12 +15,24 @@ class MovieApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MovieProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MovieProvider()),
+        ChangeNotifierProvider(
+          create: (context) => ReviewProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CasterProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
+        ),
+        ChangeNotifierProvider(create: (context) => FavouriteProvider())
+      ],
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: RouteName.navigationRoute,
+          initialRoute: RouteName.splashRoute,
           onGenerateRoute: RouteManager.routeManager,
           theme: ThemeApp.themeApp,
         );

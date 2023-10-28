@@ -1,6 +1,9 @@
 import 'package:baitap08/config/size_config.dart';
+import 'package:baitap08/provider/favourite_provider.dart';
+import 'package:baitap08/provider/movie_provider.dart';
 import 'package:baitap08/route/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,13 +16,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        RouteName.navigationRoute,
-        (route) => false,
-      );
-    });
+    _fectData();
+  }
+
+  void _fectData() async {
+    await context.read<MovieProvider>().getMoviesNowPlaying();
+    await context.read<MovieProvider>().getMoviesPopular();
+    await context.read<MovieProvider>().getMoviesTopRated();
+    await context.read<MovieProvider>().getMoviesUpComing();
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      RouteName.loginRoute,
+      (route) => false,
+    );
   }
 
   @override

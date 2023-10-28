@@ -5,4 +5,5 @@ class RouteName {
   static const String detailRoute = "/detailRoute";
   static const String watchListRoute = "/watchListRoute";
   static const String navigationRoute = "/navigationRoute";
+  static const String loginRoute = "/loginRoute";
 }

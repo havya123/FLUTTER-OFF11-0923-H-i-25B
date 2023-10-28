@@ -3,24 +3,31 @@ import 'package:baitap08/repository/movie_repo.dart';
 import 'package:flutter/material.dart';
 
 class MovieProvider extends ChangeNotifier {
-  Future<List<Movie>> getMoviesTopRated() async {
-    var response = await MovieRepo().getMoviesPopular("top_rated");
-    return response;
+  List<Movie> topRatedMovies = [];
+  List<Movie> upComingMovies = [];
+  List<Movie> popularMovies = [];
+  List<Movie> nowPlayongMovies = [];
+
+  Future<void> getMoviesTopRated() async {
+    topRatedMovies = await MovieRepo().getMoviesPopular("top_rated");
+    notifyListeners();
   }
 
-  Future<List<Movie>> getMoviesUpComing() async {
-    var response = await MovieRepo().getMoviesPopular("upcoming");
-    return response;
+  Future<void> getMoviesUpComing() async {
+    upComingMovies = await MovieRepo().getMoviesPopular("upcoming");
+
+    notifyListeners();
   }
 
-  Future<List<Movie>> getMoviesPopular() async {
-    var response = await MovieRepo().getMoviesPopular("popular");
-    return response;
+  Future<void> getMoviesPopular() async {
+    popularMovies = await MovieRepo().getMoviesPopular("popular");
+    notifyListeners();
   }
 
-  Future<List<Movie>> getMoviesNowPlaying() async {
-    var response = await MovieRepo().getMoviesPopular("now_playing");
-    return response;
+  Future<void> getMoviesNowPlaying() async {
+    nowPlayongMovies = await MovieRepo().getMoviesPopular("now_playing");
+
+    notifyListeners();
   }
 
   Future<Movie?> getMovieDetail(int? id) async {

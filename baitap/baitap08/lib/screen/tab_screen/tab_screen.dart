@@ -17,33 +17,28 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = ThemeApp.themeApp.textTheme;
-    return SizedBox(
-      height: getHeight(context, height: 0.75),
-      child: DefaultTabController(
-          initialIndex: 0,
-          length: widget.type.length, // Number of tabs
-          child: Scaffold(
-            body: Column(
-              children: [
-                TabBar(
-                  indicatorColor: const Color(0xff3A3F47),
-                  indicatorWeight: 4.0,
-                  unselectedLabelStyle: textTheme.titleMedium,
-                  labelStyle: textTheme.titleSmall,
-                  isScrollable: true,
-                  tabs: widget.type.map((tab) => Tab(text: tab)).toList(),
-                  onTap: (index) {
-                    setState(() {
-                      _currentIndex = index; // Update the current tab index
-                    });
-                  },
-                ),
-                spaceHeight(context),
-                TabWidget(indexTab: _currentIndex)
-              ],
-            ),
-          )),
+    return DefaultTabController(
+      initialIndex: 0,
+      length: widget.type.length,
+      child: Column(
+        children: [
+          TabBar(
+            indicatorColor: const Color(0xff3A3F47),
+            indicatorWeight: 4.0,
+            unselectedLabelStyle: textTheme.titleMedium,
+            labelStyle: textTheme.titleSmall,
+            isScrollable: true,
+            tabs: widget.type.map((tab) => Tab(text: tab)).toList(),
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
+          spaceHeight(context),
+          TabWidget(indexTab: _currentIndex),
+        ],
+      ),
     );
   }
 }

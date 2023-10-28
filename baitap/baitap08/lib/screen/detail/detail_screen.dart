@@ -1,8 +1,9 @@
 import 'package:baitap08/config/size_config.dart';
 import 'package:baitap08/model/movie.dart';
+import 'package:baitap08/provider/favourite_provider.dart';
 import 'package:baitap08/provider/movie_provider.dart';
-import 'package:baitap08/screen/detail/widget/category_widget.dart';
-import 'package:baitap08/screen/tab_screen/tab_screen.dart';
+import 'package:baitap08/provider/review_provider.dart';
+import 'package:baitap08/screen/detail/detail_tab.dart';
 import 'package:baitap08/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,8 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class DetailScreen extends StatefulWidget {
-  DetailScreen({required this.id, super.key});
-  int id;
+  const DetailScreen({required this.id, super.key});
+  final int id;
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -20,44 +21,33 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
+    context.read<ReviewProvider>().getReview(widget.id);
     TextTheme textTheme = ThemeApp.themeApp.textTheme;
-    int currentIndex = 0;
-    List type = [
-      "About Movie",
-    ];
     return Scaffold(
-      body: FutureBuilder(
-          future: context.read<MovieProvider>().getMovieDetail(widget.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (!snapshot.hasData) {
-              return const Center(
-                child: Text("No data"),
-              );
-            } else {
-              Movie? data = snapshot.data;
-              List<IconData> icon = [
-                FontAwesomeIcons.calendar,
-                FontAwesomeIcons.clock,
-                FontAwesomeIcons.ticket,
-              ];
-              List<String> info = [
-                data!.releaseDate,
-                "${data.runTime.toString()} Minutes",
-                data.genres,
-              ];
-              return SingleChildScrollView(
-                child: Column(
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+            future: context.read<MovieProvider>().getMovieDetail(widget.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (!snapshot.hasData) {
+                return const Center(
+                  child: Text("No data"),
+                );
+              } else {
+                Movie? data = snapshot.data;
+                return Column(
                   children: [
                     spaceHeight(context),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           icon: const Icon(
                             Icons.keyboard_return,
                             size: 20,
@@ -94,18 +84,43 @@ class _DetailScreenState extends State<DetailScreen> {
                               fit: BoxFit.cover,
                               placeholder: kTransparentImage,
                               image:
-                                  "https://image.tmdb.org/t/p/w500/${data.backdrop}",
+                                  "https://image.tmdb.org/t/p/w500/${data!.backdrop}",
                               imageErrorBuilder: (context, error, stackTrace) =>
                                   Image.network(
                                       "https://static.thenounproject.com/png/504708-200.png"),
                             ),
+                          ),
+                          Consumer<FavouriteProvider>(
+                            builder: (context, value, child) {
+                              return Positioned(
+                                  right: 0,
+                                  child: IconButton(
+                                    icon: !value.isSaved(widget.id)
+                                        ? const Icon(
+                                            FontAwesomeIcons.heart,
+                                            color: Colors.orange,
+                                          )
+                                        : const Icon(
+                                            FontAwesomeIcons.heartCircleCheck,
+                                            color: Colors.orange,
+                                          ),
+                                    onPressed: () {
+                                      context
+                                          .read<FavouriteProvider>()
+                                          .addFavouriteItem(widget.id);
+                                      context
+                                          .read<FavouriteProvider>()
+                                          .loadWatchList();
+                                    },
+                                  ));
+                            },
                           ),
                           Positioned(
                             left: getWidth(context),
                             bottom: getHeight(context),
                             child: Container(
                               clipBehavior: Clip.hardEdge,
-                              height: getHeight(context, height: 0.25),
+                              height: getHeight(context, height: 0.23),
                               width: getWidth(context, width: 0.3),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -162,79 +177,68 @@ class _DetailScreenState extends State<DetailScreen> {
                         ],
                       ),
                     ),
-                    Center(
-                      child: SizedBox(
-                          height: getHeight(context),
-                          width: getWidth(context, width: 0.8),
-                          child: ListView.separated(
-                            itemBuilder: (context, index) => SizedBox(
-                              width: getWidth(context, width: 0.25),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Icon(
-                                    icon[index],
-                                    color: const Color(0xff92929D),
-                                  ),
-                                  Text(
-                                    info[index],
-                                    style: const TextStyle(
-                                        color: Color(0xff92929D)),
-                                  )
-                                ],
-                              ),
-                            ),
-                            separatorBuilder: (context, index) =>
-                                const VerticalDivider(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              FontAwesomeIcons.calendar,
                               color: Color(0xff92929D),
+                              size: 15,
                             ),
-                            itemCount: 3,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                          )),
+                            spaceWidth(context, width: 0.02),
+                            Text(
+                              data.releaseDate,
+                              style: const TextStyle(
+                                  color: Color(0xff92929D), fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        spaceWidth(context, width: 0.08),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              FontAwesomeIcons.ticket,
+                              color: Color(0xff92929D),
+                              size: 15,
+                            ),
+                            spaceWidth(context, width: 0.02),
+                            Text(
+                              data.genres,
+                              style: const TextStyle(
+                                  color: Color(0xff92929D), fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        spaceWidth(context, width: 0.08),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              FontAwesomeIcons.clock,
+                              color: Color(0xff92929D),
+                              size: 15,
+                            ),
+                            spaceWidth(context, width: 0.02),
+                            Text(
+                              "${data.runTime} Minutes",
+                              style: const TextStyle(
+                                  color: Color(0xff92929D), fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     spaceHeight(context),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SizedBox(
-                        height: getHeight(context, height: 0.75),
-                        child: DefaultTabController(
-                            initialIndex: 0,
-                            length: type.length, // Number of tabs
-                            child: Scaffold(
-                              body: Column(
-                                children: [
-                                  TabBar(
-                                    indicatorColor: const Color(0xff3A3F47),
-                                    indicatorWeight: 4.0,
-                                    unselectedLabelStyle: textTheme.titleMedium,
-                                    labelStyle: textTheme.titleSmall,
-                                    isScrollable: true,
-                                    tabs: type
-                                        .map((tab) => Tab(text: tab))
-                                        .toList(),
-                                    onTap: (index) {
-                                      setState(() {
-                                        currentIndex =
-                                            index; // Update the current tab index
-                                      });
-                                    },
-                                  ),
-                                  spaceHeight(context),
-                                  DetailTab(
-                                    movie: data,
-                                  )
-                                ],
-                              ),
-                            )),
-                      ),
-                    )
+                    DetailTab(movie: data)
                   ],
-                ),
-              );
-            }
-          }),
+                );
+              }
+            }),
+      ),
     );
   }
 }

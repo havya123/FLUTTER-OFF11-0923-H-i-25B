@@ -10,17 +10,15 @@ class Item extends StatelessWidget {
   int id;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed(RouteName.detailRoute, arguments: id);
-      },
-      child: Ink(
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(width: 1, color: Colors.black)),
+    return Material(
+      clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(RouteName.detailRoute, arguments: id);
+        },
+        child: Ink(
           child: FadeInImage.memoryNetwork(
               image: "https://image.tmdb.org/t/p/w500/$image",
               placeholder: kTransparentImage,

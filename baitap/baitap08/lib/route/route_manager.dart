@@ -2,6 +2,7 @@ import 'package:baitap08/route/routes.dart';
 import 'package:baitap08/screen/detail/detail_screen.dart';
 import 'package:baitap08/screen/error_screen/error_screen.dart';
 import 'package:baitap08/screen/home_screen/home_screen.dart';
+import 'package:baitap08/screen/login/login_screen.dart';
 import 'package:baitap08/screen/navigation/navigation_screen.dart';
 import 'package:baitap08/screen/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class RouteManager {
       case RouteName.detailRoute:
         final arg = settings.arguments as int;
         return pageTransition(DetailScreen(id: arg));
+      case RouteName.loginRoute:
+        return pageTransition(const LoginScreen());
       default:
         return pageTransition(const ErrorScreen());
     }
